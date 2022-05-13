@@ -5,25 +5,23 @@ App created for own needs to record all medication doses and supplements. First 
 Simplified database structure:
 
 Cats:
-- id
 - name
 
 Doses:
-- id
 - amount
 - date
 - cat
 - item
 
 item:
-- id
 - doseType (pcs, ml, g etc., types handled in UI, stored as string / varchar(255))
 - note
 
-Healthnotes (wife's hope to write some healthnote records like eye infectio etc.)
-- id
+Healthnotes (wife's hope to write some healthnote records like eye infectio etc.):
 - date
 - note
 - cat
 
-Also vaccinations are coming. 
+Vaccinations:
+- exprirationDate
+- name
