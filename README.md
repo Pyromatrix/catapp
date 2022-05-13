@@ -12,16 +12,20 @@ Doses:
 - date
 - cat
 - item
+- deleted
 
 item:
 - doseType (pcs, ml, g etc., types handled in UI, stored as string / varchar(255))
 - note
+- deleted
 
 Healthnotes (wife's hope to write some healthnote records like eye infectio etc.):
 - date
 - note
 - cat
+- deleted
 
 Vaccinations:
 - exprirationDate
 - name
+- deleted
