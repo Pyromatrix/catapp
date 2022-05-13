@@ -5,7 +5,7 @@ import lombok.*;
 import net.javaguides.springboot.cat.model.Cat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -25,8 +25,14 @@ public class HealthNote {
     private Cat cat;
 
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
     @Column(name = "note")
     private String note;
+
+    @Column(name = "created")
+    private Date created;
+
+    @Column(name = "deleted")
+    private Date deleted;
 }

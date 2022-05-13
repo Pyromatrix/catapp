@@ -1,4 +1,4 @@
-package net.javaguides.springboot.item.model;
+package net.javaguides.springboot.vaccination.model;
 
 import lombok.*;
 
@@ -11,8 +11,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "items")
-public class Item {
+@Table(name = "vaccinations")
+public class Vaccination {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +21,12 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "note")
-    private String note;
+    @Column(name = "give_date")
+    private Date giveDate;
 
-    @Column(name = "dose_type")
-    private String doseType;
+    @Column(name = "expiration_date")
+    private Date expirationDate;
 
     @Column(name = "deleted")
     private Date deleted;
-
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cats")
+@RequestMapping("/api/cat")
 @CrossOrigin("http://localhost:3000/") //  added to avoid CORS issues
 public class CatController {
 
