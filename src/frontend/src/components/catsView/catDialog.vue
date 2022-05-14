@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="600" @keydown.esc="cancel">
     <v-card>
       <v-toolbar dark color="pink accent-5" dense flat>
-        <v-toolbar-title class="white--text">{{ newCat ? 'Lisää uusi kissa' : 'Muokkaa kissan tietoja' }}</v-toolbar-title>
+        <v-toolbar-title class="white--text">{{ newCat ? 'Lisää kissa' : 'Muokkaa kissan tietoja' }}</v-toolbar-title>
         <v-spacer/>
         <v-btn text icon @click="cancel"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>

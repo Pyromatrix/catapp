@@ -42,6 +42,7 @@
         </v-navigation-drawer>
     -->
     <v-main>
+      <main-view v-if="view === 'nakyma'"/>
       <cats-view v-if="view === 'kissat'"/>
       <items-view v-if="view === 'lisaravinteet'"/>
       <vaccinations-view v-if="view === 'rokotteet'"/>
@@ -83,11 +84,13 @@ import CatsView from "@/views/CatsView";
 import ConfirmDialog from "@/components/confirmDialog";
 import ItemsView from "@/views/ItemsView";
 import VaccinationsView from "@/views/VaccinationsView";
+import MainView from "@/views/MainView";
 
 export default {
   name: 'App',
 
   components: {
+    MainView,
     VaccinationsView,
     ItemsView,
     ConfirmDialog,

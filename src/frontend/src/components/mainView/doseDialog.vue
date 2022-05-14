@@ -1,39 +1,44 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600" @keydown.esc="cancel">
+  <v-dialog v-if="dialog" v-model="dialog" max-width="600" @keydown.esc="cancel">
     <v-card>
       <v-toolbar dark color="pink accent-5" dense flat>
-        <v-toolbar-title class="white--text">
-          {{ newItem ? 'Lisää lisäravinne' : 'Muokkaa lisäravinteen tietoja' }}
-        </v-toolbar-title>
+        <v-toolbar-title class="white--text">Lisää annos</v-toolbar-title>
         <v-spacer/>
         <v-btn text icon @click="cancel"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
       <v-card-text class="px-4">
-        <v-form ref="itemForm">
-          <v-text-field
+        <v-form ref="vaccinationForm">
+         <!-- <v-text-field
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
               color="pink accent-5"
               outlined
               class="mt-5"
-              label="Lisäravinteen nimi"
-              v-model="item.name"
-          />
+              label="Rokotteen nimi"
+              v-model="vaccination.name"
+          /> -->
           <v-select
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              :items="cats"
+              item-text="name"
+              class="mt-5"
+              item-value="id"
               color="pink accent-5"
               outlined
-              label="Annostyyppi"
-              :items="doseTypes"
-              v-model="item.doseType"
+              label="Kissa"
+              v-model="dose.cat"
           />
-          <v-textarea
+
+          <v-select
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              :items="items"
+              item-text="name"
+              item-value="id"
               color="pink accent-5"
               outlined
-              rows="3"
-              label="Huomio"
-              v-model="item.note"
+              label="Lisäravinne"
+              v-model="dose.item"
           />
+
        </v-form>
       </v-card-text>
       <v-card-actions class="pt-0">
@@ -49,42 +54,29 @@
 
 <script>
 
-import itemApi from "@/api/ItemApi";
-
 export default {
-  name: 'itemDialog',
+  name: 'doseDialog',
+  props: ['cats', 'items'],
   data: () => ({
     dialog: false,
-    newItem: false,
-    doseTypes: ['kpl', 'ml', 'mg'],
-    item: {
-      name: '',
-      note: '',
-      doseType: ''
+    dose: {
+      cat: null,
+      item: null
     },
+    giveDatePicker: false,
+    expirationDatePicker: false,
   }),
   methods: {
-    open(newItem, item) {
-      if (newItem) {
-        this.newItem = newItem;
-      } else {
-        const copyItem = JSON.parse(JSON.stringify(item));
-        this.item = copyItem;
-      }
-
+    open() {
       this.dialog = true
     },
     async agree() {
-      const validation = this.$refs.itemForm.validate();
+      const validation = this.$refs.vaccinationForm.validate();
 
       if (!validation) return;
 
         try {
-          if (this.newItem) {
-             await itemApi.createItem(this.item);
-          } else {
-            await itemApi.updateItem(this.item.id, this.item);
-          }
+         // TODO apikutsu tänne
         } catch (e) {
           console.log(e)
         }
