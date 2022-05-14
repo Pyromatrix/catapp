@@ -2,15 +2,16 @@ package net.javaguides.springboot.cat.controller;
 
 import net.javaguides.springboot.cat.model.Cat;
 import net.javaguides.springboot.cat.service.CatRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cat")
-@CrossOrigin("http://localhost:3000/") //  added to avoid CORS issues
+@CrossOrigin
 public class CatController {
 
     @Autowired
@@ -18,17 +19,26 @@ public class CatController {
 
     @GetMapping("")
     public List<Cat> getCats(){
-        return catRepository.findAll();
+        return catRepository.findAllByDeletedIsNull();
     }
 
     @GetMapping("/{id}")
-    public Optional<Cat> getCat(@PathVariable(name = "id") Long id) {
-        return catRepository.findById(id);
+    public Cat getCat(@PathVariable(name = "id") Long id) {
+        return catRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, "cat"));
+    }
+
+    @PutMapping("/{id}")
+    public Cat updateCat(@PathVariable(name = "id") Long id, @RequestBody Cat cat) {
+        cat.setId(id);
+        return catRepository.save(cat);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCat(@PathVariable(name = "id") Long id) {
-        catRepository.deleteById(id);
+        Cat cat = catRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, "cat"));
+        cat.setDeleted(new Date());
+        cat.setId(id);
+        catRepository.save(cat);
     }
 
     @PostMapping("")
