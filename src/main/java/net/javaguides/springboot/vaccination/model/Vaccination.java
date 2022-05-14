@@ -1,6 +1,7 @@
 package net.javaguides.springboot.vaccination.model;
 
 import lombok.*;
+import net.javaguides.springboot.cat.model.Cat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +19,10 @@ public class Vaccination {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "cat_id")
+    private Cat cat;
+
     @Column(name = "name")
     private String name;
 
@@ -30,12 +35,20 @@ public class Vaccination {
     @Column(name = "deleted")
     private Date deleted;
 
-    public Long getId() {
-        return id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Cat getCat() {
+        return cat;
+    }
+
+    public void setCat(Cat cat) {
+        this.cat = cat;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
