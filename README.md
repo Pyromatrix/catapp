@@ -1,6 +1,6 @@
 # catapp
 
-App created for own needs to record all medication doses and supplements. First version of UI is made by Vue PWA, but planning made UI also with Flutter or React Native for better user experience to get notifications example. iOs does not accept notifications of PWA applications like Android. Or maybe it is time to get Android, who knows :) It is quite hard after 14 years using iOs...
+App created for own needs to record all medication doses and supplements. First version of UI is made by Vue PWA, but having plans to made UI also with Flutter or React Native for better user experience to get notifications example. Because iOs does not accept notifications of PWA applications like Android. Or maybe it is time to get Android, who knows :) But it is quite hard after 14 years use of iOs...
 
 Simplified database structure:
 
