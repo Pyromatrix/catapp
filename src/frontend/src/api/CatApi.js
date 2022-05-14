@@ -11,6 +11,20 @@ const catApi = {
     async getCats() {
         const response = await axios.get(`${BASE_URL}/api/cat/`);
         return response.data;
+    },
+    async deleteCat(id) {
+        const response = await axios.delete(`${BASE_URL}/api/cat/${id}`);
+        console.log(response)
+        return response.data;
+    },
+    async getCat(id) {
+        const response = await axios.get(`${BASE_URL}/api/cat/${id}`);
+        return response.data;
+    },
+    async updateCat(id, data) {
+        const response = await axios.put(`${BASE_URL}/api/cat/${id}`, data);
+        console.log(response)
+        return response.data;
     }
 }
 export default catApi;
