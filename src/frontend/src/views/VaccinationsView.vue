@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-row no-gutters class="fill-height">
       <v-col cols="12">
-        <v-card color="grey lighten-5" class="fill-height d-flex align-end flex-column">
+        <v-card elevation="0" color="grey lighten-5" class="fill-height d-flex align-end flex-column">
           <v-card elevation="0" color="transparent" style="width: 100%; height: 100%">
             <v-list color="transparent" class="pt-0">
               <vaccination-list-item v-for="vaccination in vaccinations" :cats="cats" :vaccination="vaccination" :key="vaccination.id" @update="getVaccinations"/>

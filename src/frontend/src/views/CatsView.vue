@@ -2,14 +2,29 @@
   <v-container class="fill-height">
     <v-row no-gutters class="fill-height">
       <v-col cols="12">
-        <v-card color="grey lighten-5" class="fill-height d-flex align-end flex-column">
+        <v-card elevation="0" color="grey lighten-5" class="fill-height d-flex align-end flex-column">
           <v-card elevation="0" color="transparent" style="width: 100%; height: 100%">
             <v-list color="transparent" class="pt-0">
               <cat-list-item v-for="cat in cats" :cat="cat" :key="cat.id" @update="getCats"/>
             </v-list>
           </v-card>
+          <!-- <div v-else class="d-flex justify-center align-center" style="height: 100%">
+            <v-col cols="12">
+              <v-row class="d-flex justify-center">
+                <v-icon color="pink accent-5" size="200">mdi-cat</v-icon>
+              </v-row>
+              <v-row class="d-flex justify-center">
+                <v-card-title style="font-size: 2rem">
+                  Ei kissoja
+                </v-card-title>
+                <v-card-subtitle class="mt-1 text-center">
+                  Lisää kissoja alla olevasta "Lisää kissa" -painikkeesta
+                </v-card-subtitle>
+              </v-row>
+            </v-col>
+          </div>-->
           <v-card elevation="0" color="transparent" class="mt-auto pa-3" style="width: 100%">
-            <v-btn @click="createCat" color="pink accent-5 white--text" large block>Lisää uusi kissa</v-btn>
+            <v-btn @click="createCat" color="pink accent-5 white--text" large block>Lisää kissa</v-btn>
           </v-card>
         </v-card>
       </v-col>

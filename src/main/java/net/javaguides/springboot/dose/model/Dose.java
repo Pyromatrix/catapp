@@ -6,6 +6,7 @@ import net.javaguides.springboot.cat.model.Cat;
 import net.javaguides.springboot.item.model.Item;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Getter
@@ -33,7 +34,7 @@ public class Dose {
     private Double amount;
 
     @Column(name = "date")
-    private Date date;
+    private ZonedDateTime date;
 
     @Column(name = "created")
     private Date created;
@@ -73,11 +74,11 @@ public class Dose {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

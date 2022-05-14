@@ -6,6 +6,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,19 @@ public class DoseController {
     public List<Dose> getDoses(){
         return doseRepository.findAllByDeletedIsNull();
     }
+
+    @GetMapping("/cat/{catId}")
+    public List<Dose> getDosesByCat(@PathVariable(name = "catId") Long catId) {
+        return doseRepository.findAllByCatIdAndDeletedIsNull(catId);
+    }
+
+    @GetMapping("/date/{date}")
+    public List<Dose> getDosesByDate(@PathVariable(name = "date") ZonedDateTime date) {
+        return doseRepository.findAllByDate(date);
+    }
+
+    // zones date time
+    // jacksoni,
 
     @GetMapping("/{id}")
     public Dose getDose(@PathVariable(name = "id") Long id) {

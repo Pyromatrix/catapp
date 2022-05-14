@@ -8,38 +8,48 @@
       </v-toolbar>
       <v-card-text class="px-4">
         <v-form ref="vaccinationForm">
-         <!-- <v-text-field
-              :rules="[v => !!v || 'Kenttä on pakollinen!']"
-              color="pink accent-5"
-              outlined
-              class="mt-5"
-              label="Rokotteen nimi"
-              v-model="vaccination.name"
-          /> -->
+
           <v-select
-              :rules="[v => !!v || 'Kenttä on pakollinen!']"
-              :items="cats"
-              item-text="name"
-              class="mt-5"
-              item-value="id"
-              color="pink accent-5"
-              outlined
-              label="Kissa"
-              v-model="dose.cat"
+            :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            :items="cats"
+            item-text="name"
+            class="mt-5"
+            item-value="id"
+            color="pink accent-5"
+            outlined
+            label="Kissa"
+            v-model="dose.catId"
           />
 
           <v-select
-              :rules="[v => !!v || 'Kenttä on pakollinen!']"
-              :items="items"
-              item-text="name"
-              item-value="id"
-              color="pink accent-5"
-              outlined
-              label="Lisäravinne"
-              v-model="dose.item"
+            :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            :items="items"
+            item-text="name"
+            @change="doseNote"
+            item-value="id"
+            color="pink accent-5"
+            outlined
+            label="Lisäravinne"
+            v-model="dose.itemId"
+          />
+
+          <v-text-field
+            :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            color="pink accent-5"
+            type="number"
+            outlined
+            label="Määrä"
+            v-model.number="dose.amount"
           />
 
        </v-form>
+        <v-alert
+            v-if="doseNoteText.length > 0"
+            type="info"
+            text
+        >
+          {{ doseNoteText }}
+        </v-alert>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-col>
@@ -54,19 +64,30 @@
 
 <script>
 
+import dayjs from "dayjs";
+import doseApi from "@/api/DoseApi";
+
 export default {
   name: 'doseDialog',
   props: ['cats', 'items'],
   data: () => ({
     dialog: false,
+    doseNoteText: '',
     dose: {
-      cat: null,
-      item: null
+      catId: null,
+      itemId: null,
+      amount: null,
+      date: null
     },
     giveDatePicker: false,
     expirationDatePicker: false,
   }),
+  computed: {
+  },
   methods: {
+    doseNote(val) {
+      this.doseNoteText = this.items.find(item => item.id === val).note;
+    },
     open() {
       this.dialog = true
     },
@@ -76,11 +97,14 @@ export default {
       if (!validation) return;
 
         try {
-         // TODO apikutsu tänne
+          this.dose.date = dayjs();
+          this.dose.cat = this.cats.find(cat => cat.id === this.dose.catId)
+          this.dose.item = this.items.find(item => item.id === this.dose.itemId)
+          await doseApi.createDose(this.dose);
         } catch (e) {
           console.log(e)
         }
-      await this.$emit('update');
+      await this.$emit('update', this.dose.catId);
       this.cancel();
     },
     cancel() {

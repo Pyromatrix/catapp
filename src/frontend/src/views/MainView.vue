@@ -2,19 +2,19 @@
   <v-container class="fill-height">
     <v-row no-gutters class="fill-height">
       <v-col cols="12">
-        <v-card color="grey lighten-5" class="fill-height d-flex align-end flex-column">
-          <v-card elevation="0" color="transparent" style="width: 100%; height: 100%">
-            <v-list color="transparent" class="pt-0">
-              <!-- <cat-list-item v-for="cat in cats" :cat="cat" :key="cat.id" @update="getCats"/> -->
-            </v-list>
-          </v-card>
+        <v-card elevation="0" color="grey lighten-5" class="fill-height d-flex align-end flex-column">
+          <div elevation="0" color="transparent" style="width: 100%; height: 100%">
+            <template>
+              <cat-card v-for="(cat, index) in cats" :ref="`catCard_${cat.id}`" :index="index" :cat="cat" :key="cat.id"/>
+            </template>
+          </div>
           <v-card elevation="0" color="transparent" class="mt-auto pa-3" style="width: 100%">
-            <v-btn @click="createDose" color="pink accent-5 white--text" large block>Lisää uusi annos</v-btn>
+            <v-btn v-if="cats.length > 0" @click="createDose" color="pink accent-5 white--text" large block>Lisää uusi annos</v-btn>
           </v-card>
         </v-card>
       </v-col>
     </v-row>
-    <dose-dialog :cats="cats" :items="items" ref="doseDialog"/>
+    <dose-dialog :cats="cats" :items="items" ref="doseDialog" @update="updateCatCard"/>
   </v-container>
 </template>
 
@@ -22,18 +22,33 @@
 
 import catApi from "@/api/CatApi";
 import itemApi from "@/api/ItemApi";
+import doseApi from "@/api/DoseApi";
+
+
 
 import DoseDialog from "@/components/mainView/doseDialog";
+import CatCard from "@/components/mainView/catCard";
 
   export default {
     name: 'MainView',
-    components: {DoseDialog},
+    components: {CatCard, DoseDialog},
     data: () => ({
       cats: [],
       items: [],
+      doses: [],
       loading: true
     }),
     methods: {
+      updateCatCard(catId) {
+        this.$refs[`catCard_${catId.toString()}`][0].getDoses();
+      },
+      async getDosesByDate(date) {
+        try {
+          this.doses = await doseApi.getDosesByDate(date);
+        } catch (e) {
+          console.log(e)
+        }
+      },
       async createDose() {
         this.$refs.doseDialog.open();
       },
@@ -55,8 +70,11 @@ import DoseDialog from "@/components/mainView/doseDialog";
     mounted() {
       this.loading = true;
 
+      //const thisDay = dayjs();
+
       this.getCats();
       this.getItems();
+      //this.getDosesByDate(thisDay);
 
       this.loading = false;
     }
