@@ -43,6 +43,8 @@
     -->
     <v-main>
       <cats-view v-if="view === 'kissat'"/>
+      <items-view v-if="view === 'lisaravinteet'"/>
+      <vaccinations-view v-if="view === 'rokotteet'"/>
     </v-main>
     <v-bottom-navigation
         background-color="pink accent-5"
@@ -79,11 +81,15 @@
 <script>
 import CatsView from "@/views/CatsView";
 import ConfirmDialog from "@/components/confirmDialog";
+import ItemsView from "@/views/ItemsView";
+import VaccinationsView from "@/views/VaccinationsView";
 
 export default {
   name: 'App',
 
   components: {
+    VaccinationsView,
+    ItemsView,
     ConfirmDialog,
     CatsView,
   },

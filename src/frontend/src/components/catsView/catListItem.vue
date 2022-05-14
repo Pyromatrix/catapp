@@ -8,7 +8,7 @@
         <v-list-item-subtitle>Nimi</v-list-item-subtitle>
         <v-list-item-title>{{ cat.name }}</v-list-item-title>
         <v-list-item-subtitle class="mt-2">Paino</v-list-item-subtitle>
-        <v-list-item-title>{{ cat.weight ? `${cat.weight} kg` : 'Paino määrittämättä' }}</v-list-item-title>
+        <v-list-item-title>{{ cat.weight ? `${cat.weight} kg` : 'Määrittämättä' }}</v-list-item-title>
       </v-list-item-content>
       <v-list-item-action>
         <v-btn icon>
@@ -17,7 +17,7 @@
       </v-list-item-action>
     </v-list-item>
     <v-divider/>
-    <cat-dialog ref="catDialog" @update="emit"></cat-dialog>
+    <cat-dialog ref="catDialog" @update="$emit('update')"></cat-dialog>
   </div>
 
 </template>
@@ -31,15 +31,11 @@ export default {
   components: {CatDialog},
   props: ['cat'],
   methods: {
-    emit() {
-      console.log('emit tulee')
-      this.$emit('update')
-    },
     async openCat() {
       this.$refs.catDialog.open(false, this.cat);
     },
     async deleteCat() {
-      const confirm = await this.$root.$confirm('Poistetaanko kissa?', 'Se poistuu listalta ja sen palauttaminen vaatii tietokantatyötä.', {
+      const confirm = await this.$root.$confirm('Poista kissa?', 'Se poistuu listalta ja sen palauttaminen vaatii tietokantatyötä.', {
         color: 'error'
       })
 

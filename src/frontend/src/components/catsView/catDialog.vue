@@ -7,10 +7,21 @@
         <v-btn text icon @click="cancel"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
       <v-card-text class="px-4">
-         <v-form>
-         <v-text-field color="pink accent-5" outlined class="mt-5" label="Kissan nimi" v-model="cat.name"/>
-         <v-text-field color="pink accent-5" outlined type="number" label="Kissan paino (kg)" v-model="cat.weight"/>
-       </v-form>
+        <v-form ref="catForm">
+          <v-text-field
+            :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            color="pink accent-5"
+            outlined class="mt-5"
+            label="Kissan nimi"
+            v-model="cat.name"
+          />
+          <v-text-field
+            color="pink accent-5"
+            outlined type="number"
+            label="Kissan paino (kg)"
+            v-model="cat.weight"
+          />
+        </v-form>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-col>
@@ -39,11 +50,20 @@ export default {
   }),
   methods: {
     open(newCat, cat) {
-      newCat && (this.newCat = newCat);
-      cat && (this.cat = cat);
+      if (newCat) {
+        this.newCat = newCat;
+      } else {
+        const copyCat = JSON.parse(JSON.stringify(cat));
+        this.cat = copyCat;
+      }
+
       this.dialog = true
     },
     async agree() {
+      const validation = this.$refs.catForm.validate();
+
+      if (!validation) return;
+
         try {
           if (this.newCat) {
              await catApi.createCat(this.cat);

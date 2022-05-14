@@ -14,7 +14,6 @@ const catApi = {
     },
     async deleteCat(id) {
         const response = await axios.delete(`${BASE_URL}/api/cat/${id}`);
-        console.log(response)
         return response.data;
     },
     async getCat(id) {
@@ -23,7 +22,6 @@ const catApi = {
     },
     async updateCat(id, data) {
         const response = await axios.put(`${BASE_URL}/api/cat/${id}`, data);
-        console.log(response)
         return response.data;
     }
 }

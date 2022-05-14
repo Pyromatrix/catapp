@@ -2,6 +2,7 @@ package net.javaguides.springboot.vaccination.controller;
 
 import net.javaguides.springboot.vaccination.model.Vaccination;
 import net.javaguides.springboot.vaccination.service.VaccinationRepository;
+
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
