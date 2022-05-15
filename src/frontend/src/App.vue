@@ -48,29 +48,30 @@
       <vaccinations-view v-if="view === 'rokotteet'"/>
     </v-main>
     <v-bottom-navigation
+        height="66px"
         app
         background-color="pink accent-5"
     >
       <v-btn @click="view = 'nakyma'">
-        <span class="white--text">Näkymä</span>
+        <span class="white--text mb-3">Näkymä</span>
 
         <v-icon color="white">mdi-view-dashboard-outline</v-icon>
       </v-btn>
 
       <v-btn @click="view = 'kissat'">
-        <span class="white--text">Kissat</span>
+        <span class="white--text mb-3">Kissat</span>
 
         <v-icon color="white">mdi-cat</v-icon>
       </v-btn>
 
       <v-btn @click="view = 'lisaravinteet'">
-        <span class="white--text">Lisäravinteet</span>
+        <span class="white--text mb-3">Lisäravinteet</span>
 
         <v-icon color="white">mdi-food-apple-outline</v-icon>
       </v-btn>
 
       <v-btn @click="view = 'rokotteet'">
-        <span class="white--text">Rokotteet</span>
+        <span class="white--text mb-3">Rokotteet</span>
 
         <v-icon color="white">mdi-needle</v-icon>
       </v-btn>
