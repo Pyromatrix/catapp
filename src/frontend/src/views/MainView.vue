@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card elevation="0" color="grey lighten-5" class="fill-height d-flex align-end flex-column">
           <template v-if="!loading">
-            <div v-if="cats.length > 0" elevation="0" color="transparent" style="width: 100%; height: 100%">
+            <div v-if="cats.length > 0" elevation="0" color="transparent" style="width: 100%; overflow: scroll; max-height: calc(100vh - 150px)">
               <cat-card v-for="(cat, index) in cats"
                         :ref="`catCard_${cat.id}`"
                         :index="index"

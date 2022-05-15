@@ -48,6 +48,7 @@
       <vaccinations-view v-if="view === 'rokotteet'"/>
     </v-main>
     <v-bottom-navigation
+        app
         background-color="pink accent-5"
     >
       <v-btn @click="view = 'nakyma'">
