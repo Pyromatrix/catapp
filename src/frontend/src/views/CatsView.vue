@@ -3,29 +3,23 @@
     <v-row no-gutters class="fill-height">
       <v-col cols="12">
         <v-card elevation="0" color="grey lighten-5" class="fill-height d-flex align-end flex-column">
-          <v-card elevation="0" color="transparent" style="width: 100%; height: 100%">
-            <v-list color="transparent" class="pt-0">
-              <cat-list-item v-for="cat in cats" :cat="cat" :key="cat.id" @update="getCats"/>
-            </v-list>
-          </v-card>
-          <!-- <div v-else class="d-flex justify-center align-center" style="height: 100%">
-            <v-col cols="12">
-              <v-row class="d-flex justify-center">
-                <v-icon color="pink accent-5" size="200">mdi-cat</v-icon>
-              </v-row>
-              <v-row class="d-flex justify-center">
-                <v-card-title style="font-size: 2rem">
-                  Ei kissoja
-                </v-card-title>
-                <v-card-subtitle class="mt-1 text-center">
-                  Lisää kissoja alla olevasta "Lisää kissa" -painikkeesta
-                </v-card-subtitle>
-              </v-row>
-            </v-col>
-          </div>-->
-          <v-card elevation="0" color="transparent" class="mt-auto pa-3" style="width: 100%">
-            <v-btn @click="createCat" color="pink accent-5 white--text" large block>Lisää kissa</v-btn>
-          </v-card>
+          <template v-if="!loading">
+            <v-card v-if="cats.length > 0" elevation="0" color="transparent" style="width: 100%; height: 100%">
+              <v-list color="transparent" class="pt-0">
+                <cat-list-item v-for="cat in cats" :cat="cat" :key="cat.id" @update="getCats"/>
+              </v-list>
+            </v-card>
+            <no-content
+                v-if="cats.length === 0"
+                title="Ei kissoja"
+                description="Lisää kissa alla olevasta 'Lisää kissa' -painikkeesta"
+                icon="mdi-cat"
+            />
+            <v-card elevation="0" color="transparent" class="mt-auto pa-3" style="width: 100%">
+              <v-btn @click="createCat" color="pink accent-5 white--text" large block>Lisää kissa</v-btn>
+            </v-card>
+          </template>
+          <loading-indicator v-else/>
         </v-card>
       </v-col>
     </v-row>
@@ -37,10 +31,12 @@
   import catApi from "@/api/CatApi";
   import CatListItem from "@/components/catsView/catListItem";
   import CatDialog from "@/components/catsView/catDialog";
+  import NoContent from "@/components/noContent";
+  import LoadingIndicator from "@/components/loadingIndicator";
 
   export default {
     name: 'CatsView',
-    components: {CatDialog, CatListItem},
+    components: {LoadingIndicator, NoContent, CatDialog, CatListItem},
     data: () => ({
       cat: {
         name: '',
@@ -61,10 +57,10 @@
         }
       },
     },
-    mounted() {
+    async mounted() {
       this.loading = true;
 
-      this.getCats();
+      await this.getCats();
 
       this.loading = false;
     }

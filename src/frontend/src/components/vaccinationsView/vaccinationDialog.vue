@@ -11,6 +11,7 @@
           <v-text-field
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
               color="pink accent-5"
+              :disabled="saving"
               outlined
               class="mt-5"
               label="Rokotteen nimi"
@@ -19,6 +20,7 @@
           <v-select
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
               :items="cats"
+              :disabled="saving"
               item-text="name"
               item-value="id"
               color="pink accent-5"
@@ -37,51 +39,53 @@
         >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            :rules="[v => !!v || 'Kenttä on pakollinen!']"
-            outlined
-            color="pink accent-5"
-            v-model="vaccination.giveDate"
-            label="Annettu"
-            readonly
-            v-bind="attrs"
-            v-on="on"
+              :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              outlined
+              :disabled="saving"
+              color="pink accent-5"
+              v-model="vaccination.giveDate"
+              label="Annettu"
+              readonly
+              v-bind="attrs"
+              v-on="on"
           />
         </template>
         <v-date-picker
-           color="pink accent-5"
-           locale="fi"
-           first-day-of-week="1"
-           v-model="vaccination.giveDate"
-           @input="giveDatePicker = false"
+            color="pink accent-5"
+            locale="fi"
+            first-day-of-week="1"
+            v-model="vaccination.giveDate"
+            @input="giveDatePicker = false"
         />
         </v-menu>
 
         <v-menu
-          v-model="expirationDatePicker"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
+            v-model="expirationDatePicker"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              :rules="[v => !!v || 'Kenttä on pakollinen!']"
-              outlined
-              color="pink accent-5"
-              v-model="vaccination.expirationDate"
-              label="Vanhenee"
-              readonly
-              v-bind="attrs"
-              v-on="on"
+                :disabled="saving"
+                :rules="[v => !!v || 'Kenttä on pakollinen!']"
+                outlined
+                color="pink accent-5"
+                v-model="vaccination.expirationDate"
+                label="Vanhenee"
+                readonly
+                v-bind="attrs"
+                v-on="on"
             />
           </template>
           <v-date-picker
-            color="pink accent-5"
-            locale="fi"
-            first-day-of-week="1"
-            v-model="vaccination.expirationDate"
-            @input="expirationDatePicker = false"
+              color="pink accent-5"
+              locale="fi"
+              first-day-of-week="1"
+              v-model="vaccination.expirationDate"
+              @input="expirationDatePicker = false"
           />
         </v-menu>
        </v-form>
@@ -89,7 +93,7 @@
       <v-card-actions class="pt-0">
         <v-col>
           <v-row>
-            <v-btn class="mb-2" large block color="pink accent-5" @click.native="agree">Tallenna</v-btn>
+            <v-btn :loading="saving" class="mb-2" large block color="white--text pink accent-5" @click.native="agree">Tallenna</v-btn>
           </v-row>
         </v-col>
       </v-card-actions>
@@ -116,6 +120,7 @@ export default {
     },
     giveDatePicker: false,
     expirationDatePicker: false,
+    saving: false,
   }),
   methods: {
     open(newVaccination, vaccination) {
@@ -134,17 +139,19 @@ export default {
 
       if (!validation) return;
 
-        try {
-          if (this.newVaccination) {
-            this.vaccination.cat = this.cats.find(cat => cat.id === this.vaccination.cat)
-            await vaccinationApi.createVaccination(this.vaccination);
-          } else {
-            this.vaccination.cat = this.cats.find(cat => cat.id === this.vaccination.cat)
-            await vaccinationApi.updateVaccination(this.vaccination.id, this.vaccination);
-          }
-        } catch (e) {
-          console.log(e)
+      this.saving = true;
+      try {
+        if (this.newVaccination) {
+          this.vaccination.cat = this.cats.find(cat => cat.id === this.vaccination.cat)
+          await vaccinationApi.createVaccination(this.vaccination);
+        } else {
+          this.vaccination.cat = this.cats.find(cat => cat.id === this.vaccination.cat)
+          await vaccinationApi.updateVaccination(this.vaccination.id, this.vaccination);
         }
+      } catch (e) {
+        console.log(e)
+      }
+      this.saving = false;
       await this.$emit('update');
       this.cancel();
     },

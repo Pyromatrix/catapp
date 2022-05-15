@@ -10,6 +10,7 @@
         <v-form ref="catForm">
           <v-text-field
             :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            :disabled="saving"
             color="pink accent-5"
             outlined class="mt-5"
             label="Kissan nimi"
@@ -17,6 +18,7 @@
           />
           <v-text-field
             color="pink accent-5"
+            :disabled="saving"
             outlined type="number"
             label="Kissan paino (kg)"
             v-model="cat.weight"
@@ -26,7 +28,7 @@
       <v-card-actions class="pt-0">
         <v-col>
           <v-row>
-            <v-btn class="mb-2" large block color="pink accent-5" @click.native="agree">Tallenna</v-btn>
+            <v-btn :loading="saving" class="mb-2" large block color="white--text pink accent-5" @click.native="agree">Tallenna</v-btn>
           </v-row>
         </v-col>
       </v-card-actions>
@@ -47,6 +49,7 @@ export default {
       name: '',
       weight: null
     },
+    saving: false,
   }),
   methods: {
     open(newCat, cat) {
@@ -63,16 +66,17 @@ export default {
       const validation = this.$refs.catForm.validate();
 
       if (!validation) return;
-
-        try {
-          if (this.newCat) {
-             await catApi.createCat(this.cat);
-          } else {
-            await catApi.updateCat(this.cat.id, this.cat);
-          }
-        } catch (e) {
-          console.log(e)
+      this.saving = true;
+      try {
+        if (this.newCat) {
+           await catApi.createCat(this.cat);
+        } else {
+          await catApi.updateCat(this.cat.id, this.cat);
         }
+      } catch (e) {
+        console.log(e)
+      }
+      this.saving = false;
       await this.$emit('update');
       this.cancel();
     },

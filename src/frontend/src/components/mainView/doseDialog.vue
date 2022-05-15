@@ -11,6 +11,7 @@
 
           <v-select
             :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            :disabled="saving"
             :items="cats"
             item-text="name"
             class="mt-5"
@@ -25,6 +26,7 @@
             :rules="[v => !!v || 'Kenttä on pakollinen!']"
             :items="items"
             item-text="name"
+            :disabled="saving"
             @change="doseNote"
             item-value="id"
             color="pink accent-5"
@@ -35,6 +37,7 @@
 
           <v-text-field
             :rules="[v => !!v || 'Kenttä on pakollinen!']"
+            :disabled="saving"
             color="pink accent-5"
             type="number"
             outlined
@@ -54,7 +57,7 @@
       <v-card-actions class="pt-0">
         <v-col>
           <v-row>
-            <v-btn class="mb-2" large block color="pink accent-5" @click.native="agree">Tallenna</v-btn>
+            <v-btn :loading="saving" class="mb-2" large block color="white--text pink accent-5" @click.native="agree">Tallenna</v-btn>
           </v-row>
         </v-col>
       </v-card-actions>
@@ -81,6 +84,7 @@ export default {
     },
     giveDatePicker: false,
     expirationDatePicker: false,
+    saving: false,
   }),
   computed: {
   },
@@ -95,15 +99,16 @@ export default {
       const validation = this.$refs.vaccinationForm.validate();
 
       if (!validation) return;
-
-        try {
-          this.dose.date = dayjs();
-          this.dose.cat = this.cats.find(cat => cat.id === this.dose.catId)
-          this.dose.item = this.items.find(item => item.id === this.dose.itemId)
-          await doseApi.createDose(this.dose);
-        } catch (e) {
-          console.log(e)
-        }
+      this.saving = true;
+      try {
+        this.dose.date = dayjs();
+        this.dose.cat = this.cats.find(cat => cat.id === this.dose.catId)
+        this.dose.item = this.items.find(item => item.id === this.dose.itemId)
+        await doseApi.createDose(this.dose);
+      } catch (e) {
+        console.log(e)
+      }
+      this.saving = false;
       await this.$emit('update', this.dose.catId);
       this.cancel();
     },

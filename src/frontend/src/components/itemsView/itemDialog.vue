@@ -12,6 +12,7 @@
         <v-form ref="itemForm">
           <v-text-field
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              :disabled="saving"
               color="pink accent-5"
               outlined
               class="mt-5"
@@ -20,6 +21,7 @@
           />
           <v-select
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              :disabled="saving"
               color="pink accent-5"
               outlined
               label="Annostyyppi"
@@ -28,6 +30,7 @@
           />
           <v-textarea
               :rules="[v => !!v || 'Kenttä on pakollinen!']"
+              :disabled="saving"
               color="pink accent-5"
               outlined
               rows="3"
@@ -39,7 +42,7 @@
       <v-card-actions class="pt-0">
         <v-col>
           <v-row>
-            <v-btn class="mb-2" large block color="pink accent-5" @click.native="agree">Tallenna</v-btn>
+            <v-btn :loading="saving" class="mb-2" large block color="white--text pink accent-5" @click.native="agree">Tallenna</v-btn>
           </v-row>
         </v-col>
       </v-card-actions>
@@ -62,6 +65,7 @@ export default {
       note: '',
       doseType: ''
     },
+    saving: false,
   }),
   methods: {
     open(newItem, item) {
@@ -78,16 +82,17 @@ export default {
       const validation = this.$refs.itemForm.validate();
 
       if (!validation) return;
-
-        try {
-          if (this.newItem) {
-             await itemApi.createItem(this.item);
-          } else {
-            await itemApi.updateItem(this.item.id, this.item);
-          }
-        } catch (e) {
-          console.log(e)
+      this.saving = true;
+      try {
+        if (this.newItem) {
+           await itemApi.createItem(this.item);
+        } else {
+          await itemApi.updateItem(this.item.id, this.item);
         }
+      } catch (e) {
+        console.log(e)
+      }
+      this.saving = false;
       await this.$emit('update');
       this.cancel();
     },
