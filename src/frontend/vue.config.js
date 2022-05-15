@@ -4,15 +4,6 @@ module.exports = defineConfig({
     'vuetify'
   ],
   pwa: {
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      swSrc: 'public/service-worker.js',
-      exclude: [
-        /_redirects/,
-        /\.map$/,
-        /manifest\.json$/
-      ],
-    },
     background_color: '#ffffff',
     themeColor: '#ffffff',
     msTileColor: '#ffffff',
