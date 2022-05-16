@@ -19,7 +19,7 @@ item:
 - note
 - deleted
 
-Healthnotes (wife's hope to write some healthnote records like eye infectio etc.):
+Healthnotes (wife's hope to write some healthnote records like eye infectio etc. Coming in future release):
 - date
 - note
 - cat
