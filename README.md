@@ -30,4 +30,4 @@ Vaccinations:
 - name
 - deleted
 
-<img src="https://media0.giphy.com/media/5vNOymulA3Tgz0UgZ6/giphy.gif?cid=790b7611b26291856ed5232928bcee14518030a7b095e24a&rid=giphy.gif&ct=g">
+<img src="https://s8.gifyu.com/images/ezgif.com-gif-maker5d8681f1350a939b.gif">
