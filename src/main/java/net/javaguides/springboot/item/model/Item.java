@@ -29,44 +29,4 @@ public class Item {
 
     @Column(name = "deleted")
     private Date deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getDoseType() {
-        return doseType;
-    }
-
-    public void setDoseType(String doseType) {
-        this.doseType = doseType;
-    }
-
-    public Date getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Date deleted) {
-        this.deleted = deleted;
-    }
 }
