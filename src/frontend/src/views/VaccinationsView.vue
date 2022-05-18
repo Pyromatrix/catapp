@@ -66,10 +66,10 @@
         }
       },
     },
-    mounted() {
+    async mounted() {
       this.loading = true;
-      this.getCats();
-      this.getVaccinations();
+      await this.getCats();
+      await this.getVaccinations();
 
       this.loading = false;
     }
